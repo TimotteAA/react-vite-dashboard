@@ -39,7 +39,7 @@ export interface RouterConfig<T extends RecordAnyOrNever = RecordNever> {
 export interface RouteOption<T extends RecordAnyOrNever = RecordNever>
     extends Omit<DataRouteObject, 'children' | 'Component' | 'ErrorBoundary' | 'lazy' | 'id'> {
     id: string;
-    /** 默认为菜单路由，false则不是菜单路由 */
+    /** 默认为菜单路由，false则不是菜单路由不会显示在路由表中 */
     menu?: boolean;
     divide?: boolean;
     onlyGroup?: boolean;

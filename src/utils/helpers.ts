@@ -1,4 +1,5 @@
 import deepmerge from 'deepmerge';
+import { isNil } from 'lodash';
 
 /**
  * 深度合并对象
@@ -18,4 +19,14 @@ export const deepMerge = <T1, T2>(
         options.arrayMerge = (_d, s, _o) => Array.from(new Set([..._d, ...s]));
     }
     return deepmerge(x, y, options) as T2 extends T1 ? T1 : T1 & T2;
+};
+
+export const isUrl = (path?: string) => {
+    if (isNil(path) || !path.startsWith('http') || !path.startsWith('https')) return false;
+    try {
+        const url = new URL(path);
+        return !!url;
+    } catch (error) {
+        return false;
+    }
 };

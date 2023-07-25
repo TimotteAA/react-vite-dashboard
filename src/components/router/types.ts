@@ -42,6 +42,7 @@ export interface RouteOption<T extends RecordAnyOrNever = RecordNever>
     /** 默认为菜单路由，false则不是菜单路由不会显示在路由表中 */
     menu?: boolean;
     divide?: boolean;
+    // 父路由不需要页面，但有子路由时
     onlyGroup?: boolean;
     /** 路由页面，可以是组件或者组件所在路径 */
     page?: ComponentType | string | null;

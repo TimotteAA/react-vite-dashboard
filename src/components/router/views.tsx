@@ -68,7 +68,7 @@ export const getAsyncImport = (props: { page: string }) => {
  * @param param0
  * @returns
  */
-export const AuthDirect: FC<{ loginPath?: string }> = ({ loginPath }) => {
+export const AuthReDirect: FC<{ loginPath?: string }> = ({ loginPath }) => {
     const location = useLocation();
     let redirect = `?redirect=${location.pathname}`;
     if (location.search) redirect = `${redirect}${location.search}`;

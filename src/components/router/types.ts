@@ -8,6 +8,7 @@ export interface RouterState<T extends RecordAnyOrNever = RecordNever> {
     routes: RouteOption<T>[];
     flat: RouteOption<T>[];
     menus: RouteOption<T>[];
+    // 路由表配置在其中，上面三项是经过处理后的路由
     config: RouterConfig<T>;
 }
 

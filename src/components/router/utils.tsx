@@ -165,6 +165,7 @@ export const factoryRoutes = (routes: RouteOption[]) =>
 
 /**
  * 获取异步路由页面
+ * 将全局配置和route自己的配置合并
  * @param config 全局router配置
  * @param option 路由表中的某项配置
  */

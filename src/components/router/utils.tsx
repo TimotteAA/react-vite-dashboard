@@ -107,7 +107,9 @@ export const getFullPathRoutes = (routes: RouteOption[], parentPath?: string): R
             const item: RouteOption = { ...route };
 
             // 初始化父路径和子路径前缀
+            // parent和child一开始一样
             const pathPrefix: { parent?: string; child?: string } = {
+                // parent是否为空，为空则处理成/，否则是 /xxx/
                 parent: trim(parentPath ?? '', '/').length
                     ? `/${trim(parentPath ?? '', '/')}/`
                     : '/',
@@ -122,9 +124,11 @@ export const getFullPathRoutes = (routes: RouteOption[], parentPath?: string): R
                 item.path = route.path;
             } else {
                 // 如果不是 URL，拼接父路径和子路径生成全路径
+                // 当route.path存在时和pathPrefix.parent拼接，不存在直接取child
                 pathPrefix.child = route.path?.length
                     ? `${pathPrefix.parent}${trim(route.path, '/')}`
                     : pathPrefix.child;
+                // 分组不显示路由
                 item.path = route.onlyGroup ? undefined : pathPrefix.child;
             }
 
@@ -141,3 +145,74 @@ export const getFullPathRoutes = (routes: RouteOption[], parentPath?: string): R
         })
         // 使用 reduce 将 map 返回的二维数组合并成一维数组
         .reduce((o, n) => [...o, ...n], []);
+
+/**
+ * 构建路由渲染列表
+ * 递归地将路由表中的每一项和全局配置合并
+ * @param routes
+ */
+export const factoryRoutes = (routes: RouteOption[]) =>
+    routes.map((item) => {
+        const config = RouterStore.getState();
+        let option: DataRouteObject = generateAsyncPage(config, item);
+        const { children } = option;
+        option = generateAsyncPage(config, option);
+        if (!isNil(children) && children.length) {
+            option.children = factoryRoutes(children);
+        }
+        return option;
+    });
+
+/**
+ * 获取异步路由页面
+ * @param config 全局router配置
+ * @param option 路由表中的某项配置
+ */
+const generateAsyncPage = (config: RouterConfig, option: RouteOption) => {
+    const item = { ...omit(option, ['Component', 'ErrorBoundary']) } as DataRouteObject;
+    let fallback: JSX.Element | undefined;
+    // 全局的loading
+    if (config.loading) fallback = <config.loading />;
+    // 页面自己的loading
+    if (option.loading) fallback = <option.loading />;
+    if (typeof option.page === 'string') {
+        // 导出页面的组件
+        const AsyncPage = getAsyncImport({
+            page: option.page as string,
+        });
+        if (!isNil(option.pageRender)) {
+            // 页面自己的render
+            item.Component = () => option.pageRender!(item, AsyncPage);
+        } else {
+            // 全局
+            item.Component = ({ ...rest }) => (
+                <Suspense fallback={fallback}>
+                    <AsyncPage route={item} {...rest} />
+                </Suspense>
+            );
+        }
+    } else {
+        // 直接是组件了
+        item.Component = option.page;
+    }
+    if (typeof option.error === 'string') {
+        // error页面
+        const AsyncErrorPage = getAsyncImport({
+            page: option.error as string,
+        });
+        if (!isNil(option.errorRender)) {
+            item.ErrorBoundary = () => option.errorRender!(item, AsyncErrorPage);
+        } else {
+            // 使用全局error包装
+            item.ErrorBoundary = ({ ...rest }) => (
+                <Suspense fallback={fallback}>
+                    <AsyncErrorPage route={item} {...rest} />
+                </Suspense>
+            );
+        }
+    } else {
+        // Error是个组件
+        item.ErrorBoundary = option.error;
+    }
+    return item as DataRouteObject;
+};

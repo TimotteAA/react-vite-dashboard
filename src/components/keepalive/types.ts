@@ -82,6 +82,6 @@ export type KeepAliveActionType =
           type: KeepAliveAction.RESET;
           payload: {
               id: string | null;
-              navigate: RouteNavigator;
+              //   navigate: RouteNavigator;
           };
       };

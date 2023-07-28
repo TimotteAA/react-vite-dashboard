@@ -41,6 +41,7 @@ const SWRProvider: FC<{ children: ReactNode }> = ({ children }) => {
                 let requestConfig: AxiosRequestConfig = options ?? {};
                 if (typeof resource === 'string') requestConfig.url = resource;
                 else requestConfig = deepMerge(requestConfig, resource, 'replace');
+                // swr用于缓存get请求
                 return fetcher.request({ ...requestConfig, method: 'get' });
             },
         }),

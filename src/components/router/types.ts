@@ -5,15 +5,18 @@ import { DataRouteObject, NavigateOptions, Path } from 'react-router';
 /** 路由store */
 export interface RouterState<T extends RecordAnyOrNever = RecordNever> {
     ready: boolean;
+    /** 路由表 */
     routes: RouteOption<T>[];
+    /** 展平后的路由表 */
     flat: RouteOption<T>[];
+    /** 所有的菜单 */
     menus: RouteOption<T>[];
     // 路由表配置在其中，上面三项是经过处理后的路由
     config: RouterConfig<T>;
 }
 
 /**
- * 路由配置
+ * 全局路由配置
  */
 export interface RouterConfig<T extends RecordAnyOrNever = RecordNever> {
     /** 根路径，默认为'/' */

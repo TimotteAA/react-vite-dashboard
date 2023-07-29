@@ -31,6 +31,4 @@ export enum KeepAliveAction {
  * 用于每个router记住自己在lives数组中的id
  */
 export const KeepAliveIdContext = createContext<string | null>(null);
-export const KeepAliveDispatchContext = createContext<Dispatch<KeepAliveAction | null> | null>(
-    null,
-);
+export const KeepAliveDispatchContext = createContext<Dispatch<KeepAliveActionType> | null>(null);

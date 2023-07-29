@@ -3,6 +3,7 @@ import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-rou
 import { shallow } from 'zustand/shallow';
 
 import Auth from '../auth/provider';
+
 import { useRouterSetuped, useRouterStore } from './hooks';
 import { factoryRoutes } from './utils';
 
@@ -30,6 +31,7 @@ const RouterWrapper: FC = () => {
 const RouterComponent: FC = () => {
     /**
      * 配置路由
+     * 用户的登录与退出会重置路由
      */
     useRouterSetuped();
     return <RouterWrapper />;

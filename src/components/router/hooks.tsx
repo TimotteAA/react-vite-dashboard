@@ -20,6 +20,9 @@ import { getDefaultRouterConfig } from './_default.config';
 
 export const useRouterSetuped = () => {
     const ready = RouterStore((state) => state.ready);
+    /**
+     * 用户是否登录
+     */
     const auth = useAuth();
     useEffect(() => {
         if (RouterStore.getState().config.auth?.enabled) {

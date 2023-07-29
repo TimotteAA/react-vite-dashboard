@@ -68,7 +68,7 @@ const keepAliveReducer: Reducer<KeepAliveStoreType, KeepAliveActionType> = produ
             }
             /** 标记某个tab为打开，但无路由切换，进行预加载 */
             case KeepAliveAction.ACTIVE: {
-                const current = state.lives.find((item) => item === action.id);
+                const current = state.lives.find((item) => item === action.payload.id);
                 if (current && state.active !== current) state.active = current;
                 break;
             }
@@ -94,7 +94,7 @@ const keepAliveReducer: Reducer<KeepAliveStoreType, KeepAliveActionType> = produ
 export const KeepAliveStore = createReduxStore(keepAliveReducer, {
     path: '/',
     active: null,
-    inlude: [],
+    include: [],
     exclude: [],
     maxLen: 10,
     lives: [],

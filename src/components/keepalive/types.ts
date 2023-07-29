@@ -17,7 +17,7 @@ export interface KeepAliveConfig {
 
 export interface KeepAliveStoreType extends Required<KeepAliveConfig> {
     /** 白名单? */
-    inlude?: Array<string>;
+    include?: Array<string>;
     /** 保存的标签id数组 */
     lives: string[];
     reset: string | null;
@@ -62,7 +62,9 @@ export type KeepAliveActionType =
     | {
           /** 切换成激活？ */
           type: KeepAliveAction.ACTIVE;
-          id: string;
+          payload: {
+              id: string;
+          };
       }
     | {
           type: KeepAliveAction.CHANGE;

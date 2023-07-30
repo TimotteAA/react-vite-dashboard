@@ -1,17 +1,17 @@
 import { AuthConfig } from './components/auth/types';
 // import { FetcherConfig } from './components/fetcher/types';
 // import { LocaleConfig } from './components/i18n/types';
-// import { IconConfig } from './components/icon/types';
+import { IconConfig } from './components/icon/types';
 import { FetcherConfig } from './components/fetcher/types';
 import { LayoutConfig } from './components/layout/types';
 import { RouterConfig } from './components/router/types';
-// import { ThemeConfig } from './components/theme/types';
+import { ThemeConfig } from './components/theme/types';
 // import { ScreenSizeType } from './utils/constants';
 
 export interface IConfig {
     // locale?: LocaleConfig;
-    // theme?: ThemeConfig;
-    // icon?: IconConfig;
+    theme?: ThemeConfig;
+    icon?: IconConfig;
     router?: RouterConfig;
     layout?: LayoutConfig;
     fetcher?: FetcherConfig;

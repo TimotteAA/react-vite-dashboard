@@ -5,13 +5,13 @@ import { LayoutTheme } from './types';
  * 侧边栏和顶栏布局模式
  */
 export enum LayoutMode {
-    /******只有顶部导航，菜单项和logo都在顶部*** */
+    /** 只有顶部导航，菜单项和logo都在顶部*** */
     TOP = 'top',
-    /******侧边导航，顶栏自定义内容（keepalive)*************** */
+    /** 侧边导航，顶栏自定义内容（keepalive)*************** */
     SIDE = 'side',
-    /******与side类似，但是logo在顶栏 */
+    /** 与side类似，但是logo在顶栏，侧边折叠 */
     CONTENT = 'content',
-    /******左、上导航都在，侧边折叠仅显示icon，额外导航显示menu */
+    /** 左、上导航都在，侧边折叠仅显示icon，额外导航显示menu */
     EMBED = 'embed',
 }
 

@@ -1,5 +1,6 @@
 import deepmerge from 'deepmerge';
 import { isNil } from 'lodash';
+import { MutableRefObject } from 'react';
 
 /**
  * 深度合并对象
@@ -28,5 +29,38 @@ export const isUrl = (path?: string) => {
         return !!url;
     } catch (error) {
         return false;
+    }
+};
+
+export const isAsyncFn = <A extends any[], R>(
+    fn: (...args: A) => R | Promise<R>,
+): fn is (...args: A) => Promise<R> => {
+    const asyncFunc = async () => {};
+    return fn instanceof asyncFunc.constructor.prototype === true;
+};
+
+/**
+ * 防抖执行函数,在一段时间内只执行一次
+ * @param ref 对比控制值
+ * @param fn 执行的函数,可为异步
+ * @param wait 间隔时间
+ */
+export const debounceRun = (
+    ref: MutableRefObject<NodeJS.Timeout | undefined>,
+    fn: (...args: any[]) => any,
+    wait?: number,
+) => {
+    if (isNil(ref.current)) {
+        clearTimeout(ref.current);
+        ref.current = setTimeout(() => {
+            if (isAsyncFn(fn)) {
+                fn().then(() => {
+                    ref.current = undefined;
+                });
+            } else {
+                fn();
+                ref.current = undefined;
+            }
+        }, wait ?? 10);
     }
 };

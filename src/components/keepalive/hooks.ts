@@ -61,7 +61,7 @@ export const useKeepAliveDispatch = () => {
         [navigate],
     );
 
-    const clearAlive = useCallback(() => {
+    const clearAlives = useCallback(() => {
         KeepAliveStore.dispatch({
             type: KeepAliveAction.CLEAR,
             payload: {
@@ -77,7 +77,7 @@ export const useKeepAliveDispatch = () => {
         (id: string | null) => {
             KeepAliveStore.dispatch({
                 type: KeepAliveAction.RESET,
-                payload: { id, navigate },
+                payload: { id },
             });
             if (!isNil(id) && navigate) navigate({ id });
         },
@@ -87,7 +87,7 @@ export const useKeepAliveDispatch = () => {
     return {
         refreshAlive,
         changeAlive,
-        clearAlive,
+        clearAlives,
         removeAlive,
         removeAlives,
     };

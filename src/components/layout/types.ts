@@ -109,3 +109,11 @@ export interface LayoutSplitMenuState {
     /** 选中的菜单 */
     selects: string[];
 }
+
+export enum ColorConfig {
+    PRIMARY = 'primary',
+    INFO = 'info',
+    SUCCESS = 'success',
+    ERROR = 'error',
+    WARNING = 'warning',
+}

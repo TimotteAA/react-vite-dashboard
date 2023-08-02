@@ -2,7 +2,7 @@ import { LayoutMode } from '../../constants';
 import { ColorConfig } from '../../types';
 
 /**
- * 布局组件混合主题色
+ * 布局组件混合主题色：侧边栏和header
  */
 export enum LayoutTheme {
     DARKLIGHT = 'dark-light',

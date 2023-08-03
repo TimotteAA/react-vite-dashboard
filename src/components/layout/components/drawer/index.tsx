@@ -1,6 +1,8 @@
 import { Divider, Drawer, Switch, Tooltip } from 'antd';
 import { FC, ReactNode, useCallback, useState } from 'react';
 
+// import { SketchPicker, ColorResult } from 'react-color';
+
 import clsx from 'clsx';
 
 import { useLayout, useLayoutAction } from '../../hooks';
@@ -105,6 +107,66 @@ const DrawerProvider: FC<{ children?: ReactNode }> = ({ children }) => {
         </DrawerContext.Provider>
     );
 };
+
+// const ColorSetting = () => {
+//     const colors = useColors();
+//     const { changeColor } = useColorDispatch();
+//     const [display, setDisplay] = useState<{ [key in NonNullable<keyof ColorConfig>]: boolean }>({
+//         primary: false,
+//         info: false,
+//         success: false,
+//         warning: false,
+//         error: false,
+//     });
+//     const closePickers = useCallback(() => {
+//         setDisplay(
+//             produce((state) => {
+//                 Object.keys(state).forEach((key) => {
+//                     state[key] = false;
+//                 });
+//             }),
+//         );
+//     }, []);
+//     const togglePicker = useCallback((picker: keyof ColorConfig) => {
+//         closePickers();
+//         setDisplay(
+//             produce((state) => {
+//                 state[picker] = !state[picker];
+//             }),
+//         );
+//     }, []);
+//     const changeAppColor = useCallback((color: ColorResult['rgb'], type: keyof ColorConfig) => {
+//         const rgba = `rgba(${color.r},${color.g},${color.b},${color.a ?? 1})`;
+//         changeColor(type, rgba);
+//     }, []);
+//     return (
+//         <div className={style.colorSetting}>
+//             {ColorList.map((item, index) => (
+//                 <Tooltip title={item.title} placement="bottom" key={index.toString()}>
+//                     <div className="item">
+//                         <div className="swatch" onClick={() => togglePicker(item.type)}>
+//                             <div
+//                                 className="swatch-color"
+//                                 style={{ backgroundColor: colors[item.type] }}
+//                             />
+//                         </div>
+//                         {display[item.type] ? (
+//                             <div className="picker-popover">
+//                                 <div className="picker-cover" onClick={closePickers} />
+//                                 <SketchPicker
+//                                     color={colors[item.type]}
+//                                     onChangeComplete={(color) =>
+//                                         changeAppColor(color.rgb, item.type)
+//                                     }
+//                                 />
+//                             </div>
+//                         ) : null}
+//                     </div>
+//                 </Tooltip>
+//             ))}
+//         </div>
+//     );
+// };
 
 const DrawerView: FC = () => {
     const open = useDrawer();

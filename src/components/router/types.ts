@@ -1,6 +1,7 @@
 import { ComponentType, FunctionComponent, ReactElement } from 'react';
 
 import { DataRouteObject, NavigateOptions, Path } from 'react-router';
+import { IconComponent, IconName } from '../icon/types';
 
 /** 路由store */
 export interface RouterState<T extends RecordAnyOrNever = RecordNever> {
@@ -77,12 +78,12 @@ export type RouteComponentProps = Omit<RouteOption, 'component'>;
 /** 菜单相关元元素 */
 export type MenuRouteMeta<T extends RecordAnyOrNever = RecordNever> = RecordScalable<
     {
+        /** 菜单显示名称 */
         name?: string;
         /** 是否隐藏菜单  */
         hide?: boolean;
         /** 显示图标 */
-        // icon?: IconComponent | IconName;
-        icon?: string;
+        icon?: IconComponent | IconName;
         /** <a>标签上的target,用于菜单打开外链 */
         target?: '_parent' | '_self' | '_top' | '_blank';
     },

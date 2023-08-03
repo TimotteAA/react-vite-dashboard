@@ -76,7 +76,7 @@ export const LayoutHeader = () => {
             </Space>
             <div className="tw-flex-auto">
                 {/* top模式下的导航菜单 */}
-                {mode === 'top' ? (
+                {mode === 'top' && !isMobile ? (
                     <SideMenu mode="horizontal" theme={theme.header} menu={menu} />
                 ) : null}
             </div>

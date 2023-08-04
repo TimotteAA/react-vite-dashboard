@@ -1,11 +1,22 @@
-import { Reducer } from 'react';
+import { CSSProperties, Reducer } from 'react';
 
 import { produce } from 'immer';
 
-import { deepMerge } from '@/utils';
+import { deepMerge, isUrl } from '@/utils';
 
-import { LayoutAction, LayoutFixed, LayoutState } from './types';
+import {
+    LayoutAction,
+    LayoutFixed,
+    LayoutMenuState,
+    LayoutSplitMenuState,
+    LayoutState,
+    LayoutStylesConfig,
+} from './types';
 import { LayoutActionType, LayoutMode } from './constants';
+import clsx from 'clsx';
+import { kebabCase } from 'lodash';
+import { RouteOption } from '../router/types';
+import { matchPath, Location } from 'react-router';
 
 export const layoutReducer: Reducer<LayoutState, LayoutAction> = produce((state, action) => {
     switch (action.type) {
@@ -88,4 +99,166 @@ export const getLayoutFixed = (
         if (newFixed.embed !== undefined && !newFixed.embed) current.embed = false;
     }
     return current;
+};
+
+/**
+ * 获得布局中Sidebar、Header、Embed的css类
+ * @param fixed 固定状态
+ * @param mode 模式
+ * @param style css module类
+ * @param isMobile 是否处于移动端
+ * @returns
+ */
+export const getLayoutClasses = (
+    fixed: LayoutFixed,
+    mode: `${LayoutMode}`,
+    style: CSSModuleClasses,
+    isMobile: boolean,
+) => {
+    const items = ['!tw-min-h-screen'];
+    if (fixed.sidebar || fixed.header || fixed.sidebar) {
+        items.push(style.layoutFixed);
+    }
+    switch (mode) {
+        case 'side': {
+            if (fixed.header) items.push(style.layoutSideHeaderFixed);
+            else if (fixed.sidebar) items.push(style.layoutSideSidebarFixed);
+            break;
+        }
+        case 'content': {
+            if (fixed.sidebar) items.push(style.layoutContentSidebarFixed);
+            else if (fixed.header) items.push(style.layoutContentHeaderFixed);
+            break;
+        }
+        case 'top': {
+            if (fixed.header) items.push(style.layoutTopHeaderFixed);
+            break;
+        }
+        case 'embed': {
+            items.push(style.layoutEmbed);
+            if (fixed.header) items.push(style.layoutEmbedHeaderFixed);
+            else if (fixed.embed) items.push(style.layoutEmbedEmbedFixed);
+            else if (fixed.sidebar) items.push(style.layoutEmbedSiderbarFixed);
+            break;
+        }
+        default:
+            break;
+    }
+    if (isMobile) items.push(style.mobileLayout);
+    return clsx(items);
+};
+
+/**
+ * 将store中设定的css变量转换成css style对象
+ * @param styles
+ * @returns
+ */
+export const getLayoutCssStyle = (styles: Required<LayoutStylesConfig>): CSSProperties =>
+    Object.fromEntries(
+        Object.entries(styles).map(([key, value]) => [
+            `--${kebabCase(key)}`,
+            typeof value === 'number' ? `${value}px` : value,
+        ]),
+    );
+
+/**
+ * 获得菜单数据
+ * @param menus
+ * @param location
+ * @param layoutMode
+ * @param isMobile
+ * @returns
+ */
+export const getMenuData = (
+    menus: RouteOption[],
+    location: Location,
+    layoutMode: `${LayoutMode}`,
+    isMobile: boolean,
+): LayoutMenuState => {
+    const split: LayoutSplitMenuState = {
+        data: [],
+        selects: [],
+    };
+    let data = menus;
+    // 获取选中的菜单id
+    let selects = diffKeys(getSelectMenus(data, location));
+    // 获取打开的菜单id
+    let opens = diffKeys(getOpenMenus(data, selects, []));
+    // 获取顶级菜单中拥有子菜单的菜单ID
+    let rootSubKeys = diffKeys(data.filter((menu) => menu.children));
+    // 嵌入模式仅能选择一个顶级菜单，根据顶级菜单计算展开的项
+    if (layoutMode === 'embed' && !isMobile) {
+        // data存储顶级菜单
+        split.data = menus.map((item) => {
+            const { children, ...meta } = item;
+            return meta;
+        });
+        // 选中的顶级菜单（仅找了树的第一层）
+        const select = data.find((item) => selects.includes(item.id));
+        // 没有找到选中的顶级菜单项，或者选中的顶级菜单项没有子菜单
+        if (!select || !select.children) {
+            opens = [];
+            rootSubKeys = [];
+            data = [];
+        }
+        if (select) {
+            // embed的模式下仅有一个被选中的顶级菜单
+            split.selects = [select.id];
+            if (select.children) {
+                // 根据顶级菜单重新计算
+                data = select.children;
+                selects = diffKeys(getSelectMenus(data, location));
+                selects = diffKeys(getOpenMenus(data, selects, []));
+                rootSubKeys = diffKeys(data.filter((menu) => menu.children));
+            }
+        }
+    }
+    return {
+        data,
+        opens,
+        selects,
+        rootSubKeys,
+        split,
+    };
+};
+
+const diffKeys = (menus: RouteOption[]) => menus.map((menu) => menu.id);
+
+/**
+ * 逐层提取符合当前路径的menu
+ * @param menus
+ * @param location
+ * @returns
+ */
+const getSelectMenus = (menus: RouteOption[], location: Location): RouteOption[] =>
+    menus
+        .map((menu) => {
+            if (menu.children) return getSelectMenus(menu.children, location);
+            if (menu.path && !isUrl(menu.path) && matchPath(menu.path, location.pathname)) {
+                return [menu];
+            }
+            return [];
+        })
+        .reduce((o, n) => [...o, ...n], []);
+
+/**
+ * 从选中的menu项中，获得其打开的父菜单
+ *
+ * @param menus
+ * @param selects
+ * @param parents
+ * @returns
+ */
+const getOpenMenus = (
+    menus: RouteOption[],
+    selects: string[],
+    parents: RouteOption[],
+): RouteOption[] => {
+    return menus
+        .map((menu) => {
+            // 被选中
+            if (!menu.children) return selects.includes(menu.id) ? [...parents] : [];
+            return getOpenMenus(menu.children, selects, [...parents, menu]);
+        })
+        .reduce((o, n) => [...o, ...n], []);
 };

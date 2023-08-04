@@ -85,7 +85,8 @@ const getMenuItem = (menu: RouteOption): ItemType => {
 };
 
 /**
- * 菜单项
+ * 用于侧边栏或者header页面跳转
+ *
  * @param param0
  * @returns
  */
@@ -129,7 +130,7 @@ export const SideMenu: FC<{
                 // 打开非顶级菜单
                 setOpens(keys);
             } else {
-                // 打开的是顶级菜单，仅打开这一个,以优化体验
+                // 打开的是顶级菜单，仅打开这一个
                 setOpens(latest ? [latest] : []);
             }
         },

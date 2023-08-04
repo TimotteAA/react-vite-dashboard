@@ -61,7 +61,8 @@ export const LayoutHeader = () => {
                         <Logo />
                     </div>
                 ) : null}
-                {/* 如果当前布局模式非"top"或"embed"或当前设备为移动端，显示折叠/展开按钮 */}
+                {/* 如果当前布局模式非"top"或"embed"或当前设备为移动端，显示sider折叠、drawer抽屉 */}
+                {/* 联动侧边栏Icon */}
                 {((mode !== 'top' && mode !== 'embed') || isMobile) && (
                     <Icon
                         name={
@@ -76,6 +77,7 @@ export const LayoutHeader = () => {
             </Space>
             <div className="tw-flex-auto">
                 {/* top模式下的导航菜单 */}
+                {/* 移动端下不展示上面的导航 */}
                 {mode === 'top' && !isMobile ? (
                     <SideMenu mode="horizontal" theme={theme.header} menu={menu} />
                 ) : null}

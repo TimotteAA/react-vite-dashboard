@@ -9,7 +9,7 @@ export enum LayoutMode {
     TOP = 'top',
     /** 侧边导航，顶栏自定义内容（keepalive)*************** */
     SIDE = 'side',
-    /** 与side类似，但是logo在顶栏，侧边折叠 */
+    /** 上面header，下面就是Layout与Content */
     CONTENT = 'content',
     /** 左、上导航都在，侧边折叠仅显示icon，额外导航显示menu */
     EMBED = 'embed',

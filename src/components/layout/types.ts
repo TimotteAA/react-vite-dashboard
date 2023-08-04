@@ -9,7 +9,7 @@ import { LayoutActionType, LayoutComponent, LayoutMode } from './constants';
 export interface LayoutConfig {
     /** 布局模式 */
     mode?: `${LayoutMode}`;
-    /** 是否折叠边栏,如果是embed模式则折叠子变量 */
+    /** 是否折叠边栏,如果是embed模式则折叠子边栏 */
     collapsed?: boolean;
     /** 布局组件主题色 */
     theme?: Partial<LayoutTheme>;
@@ -23,7 +23,7 @@ export interface LayoutConfig {
  * 布局配置本地储存状态池
  */
 export interface LayoutState extends ReRequired<LayoutConfig> {
-    /** 是否展示移动设备下的菜单 */
+    /** 是否展示移动端下的侧边导航栏抽屉 */
     mobileSide: boolean;
     /** 菜单数据 */
     menu: LayoutMenuState;
@@ -104,8 +104,7 @@ export interface LayoutMenuState {
  */
 export interface LayoutSplitMenuState {
     /** 菜单数据 */
-    // data: RouteOption[];
-    data: any[];
+    data: RouteOption[];
     /** 选中的菜单 */
     selects: string[];
 }

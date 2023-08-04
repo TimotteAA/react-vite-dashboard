@@ -175,3 +175,5 @@ const KeepAliveTabs = () => {
         </div>
     ) : null;
 };
+
+export default KeepAliveTabs;

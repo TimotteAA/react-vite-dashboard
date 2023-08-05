@@ -15,7 +15,6 @@ const keepAliveReducer: Reducer<KeepAliveStoreType, KeepAliveActionType> = produ
         switch (action.type) {
             /** 新打开标签页 */
             case KeepAliveAction.ADD: {
-                console.log('state.path ', state.path, state.maxLen, state.active);
                 // 已有的tabs
                 const lives = [...state.lives];
                 // 如果lives数组中已经包含了新增的id，或者active的就是新增的，直接返回
@@ -33,7 +32,6 @@ const keepAliveReducer: Reducer<KeepAliveStoreType, KeepAliveActionType> = produ
                     state.lives.push(action.payload.id);
                     state.active = action.payload.id;
                 }
-                console.log('修改后', state.path);
                 break;
             }
             case KeepAliveAction.REMOVE: {
@@ -45,7 +43,6 @@ const keepAliveReducer: Reducer<KeepAliveStoreType, KeepAliveActionType> = produ
                 state.lives.splice(index, 1);
                 // 删除的是当前所处的页面
                 if (state.active === toRemove) {
-                    console.log('toRemove ', toRemove, state.lives.length);
                     // 没有tab了，导航到默认页
                     if (state.lives.length < 1) {
                         navigate(state.path);
@@ -79,7 +76,6 @@ const keepAliveReducer: Reducer<KeepAliveStoreType, KeepAliveActionType> = produ
             case KeepAliveAction.CHANGE: {
                 const { id, navigate } = action.payload;
                 const current = state.lives.find((item) => item === id);
-                console.log('change router ', current);
                 if (!current || state.active === id) return;
                 navigate({ id });
                 break;

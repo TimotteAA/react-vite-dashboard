@@ -1,10 +1,11 @@
 import { useDeepCompareEffect } from 'ahooks';
 import { useRef, DependencyList, EffectCallback, useState } from 'react';
+import { useMedia, useUpdateEffect } from 'react-use';
 
 import { config } from '@/config';
-import { deepMerge } from '.';
+
 import { defaultScreenConfig } from './constants';
-import { useMedia, useUpdateEffect } from 'react-use';
+import { deepMerge } from '.';
 
 /**
  * 深度比较版本的useUpdateEffect

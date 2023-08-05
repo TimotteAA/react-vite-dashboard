@@ -18,12 +18,18 @@ import { NavigateTo, RouteNavigator, RouteOption } from './types';
 import { AuthReDirect } from './views';
 import { getDefaultRouterConfig } from './_default.config';
 
+/**
+ * 在应用启动前初始化路由模块
+ * 如果没有登陆，则首先跳转到AuthRedirect组件，跳转到登录页
+ */
 export const useRouterSetuped = () => {
     const ready = RouterStore((state) => state.ready);
+
     /**
      * 用户是否登录
      */
     const auth = useAuth();
+    // 根据用户登录处理路由表
     useEffect(() => {
         if (RouterStore.getState().config.auth?.enabled) {
             // 全局路由配置
@@ -36,7 +42,7 @@ export const useRouterSetuped = () => {
             );
             let routes = [...defaultRoutes];
             const routeIDs = routes.map(({ id }) => id);
-            // 忘记配置全局的登录页
+            // 没有陪住登录页
             if (!routeIDs.find((id) => id === 'auth.login')) {
                 routes.push({
                     id: 'auth.login',
@@ -49,6 +55,7 @@ export const useRouterSetuped = () => {
             // 没有登陆
             if (isNil(auth)) {
                 if (!routeIDs.find((id) => id === 'auth.redirect')) {
+                    // 默认兜底页，匹配到首页
                     routes.push({
                         id: 'auth.redirect',
                         path: '*',
@@ -57,6 +64,7 @@ export const useRouterSetuped = () => {
                     });
                 }
             } else {
+                // 滤除没有登录导航页
                 routes = routes.filter((route) => route.id !== 'auth.redirect');
             }
             RouterStore.setState((state) => {
@@ -72,7 +80,7 @@ export const useRouterSetuped = () => {
                 const { routes } = state.config;
                 state.menus = getMenus(getFullPathRoutes(routes));
                 state.routes = getRoutes(routes);
-                state.flat = getFlatRoutes(routes);
+                state.flat = getFlatRoutes(getFullPathRoutes(routes));
                 state.ready = true;
             });
         }

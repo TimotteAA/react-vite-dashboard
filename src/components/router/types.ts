@@ -32,7 +32,7 @@ export interface RouterConfig<T extends RecordAnyOrNever = RecordNever> {
     loading?: FunctionComponent | false;
     /** 某个页面的自定义包装器 */
     render?: CustomRender;
-    /** 是否开启权限路由，没有权限会自动导航到path页 */
+    /** 默认的登录页 */
     auth?: { enabled?: boolean; path?: string; page?: string | ComponentType };
     /** 前端路由列表 */
     routes: RouteOption<T>[];
@@ -44,7 +44,7 @@ export interface RouterConfig<T extends RecordAnyOrNever = RecordNever> {
 export interface RouteOption<T extends RecordAnyOrNever = RecordNever>
     extends Omit<DataRouteObject, 'children' | 'Component' | 'ErrorBoundary' | 'lazy' | 'id'> {
     id: string;
-    /** 默认为菜单路由，false则不是菜单路由不会显示在路由表中 */
+    /** 默认为菜单路由，false则不是菜单路由不会出现在路由表中 */
     menu?: boolean;
     divide?: boolean;
     // 父路由不需要页面，但有子路由时

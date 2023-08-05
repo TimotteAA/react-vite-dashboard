@@ -159,7 +159,7 @@ const LayoutWrapper: FC<LayoutConfig & { children?: ReactNode }> = ({ children }
     const Main = useMemo(() => {
         if (!isMobile) {
             if (mode === 'top') return <TopLayout>{children}</TopLayout>;
-            if (mode === 'content') return <ContentLayout></ContentLayout>;
+            if (mode === 'content') return <ContentLayout>{children}</ContentLayout>;
             if (mode === 'embed') return <EmbedLayout>{children}</EmbedLayout>;
         }
         return <SideLayout>{children}</SideLayout>;

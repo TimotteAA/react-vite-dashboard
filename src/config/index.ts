@@ -14,8 +14,8 @@ import { setting } from './routes/setting';
 export const config = (): IConfig => ({
     auth: { api: '/user/info' },
     router: {
-        // basename: import.meta.env.BASE_URL,
-        basepath: import.meta.env.BASE_URL,
+        // basepath: import.meta.env.VITE_BASE_URL,
+        basepath: '/',
         window: undefined,
         hash: false,
         routes: [

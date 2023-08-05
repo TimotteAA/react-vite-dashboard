@@ -1,11 +1,20 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
-import { AuthContext } from './constants';
-import { FetcherStore } from '../fetcher/store';
-import { useFetcher } from '../fetcher/hooks';
-import { IAuth } from './types';
-import { config } from '@/config';
 import { isNil } from 'lodash';
 
+import { config } from '@/config';
+
+import { FetcherStore } from '../fetcher/store';
+import { useFetcher } from '../fetcher/hooks';
+
+import { IAuth } from './types';
+import { AuthContext } from './constants';
+
+/**
+ * 保存用户信息的组件
+ *
+ * @param param0
+ * @returns
+ */
 const Auth: FC<{ children?: ReactNode }> = ({ children }) => {
     const token = FetcherStore((state) => state.token);
     const fetcher = useFetcher();

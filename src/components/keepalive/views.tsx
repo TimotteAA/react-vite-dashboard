@@ -107,6 +107,7 @@ const KeepPage: FC<AlivePageProps & { children: ReactNode }> = ({
         // 添加一个id 作为标识 并没有什么太多作用
         targetElement.setAttribute('id', id);
     }, [id, targetElement]);
+
     // 每次当有新的page到来后，都会是active，被渲染到targetElement中
     return <>{activedRef.current && createPortal(children, targetElement)}</>;
 };
@@ -129,7 +130,6 @@ const KeepContainer = forwardRef<ParentRef, { active: string; reset: string | nu
         >([]);
         const update = useUpdate();
         // 对外暴露刷新方法
-
         /**
          * 当调用refresh方法时，将这个页面的index赋值给redo.current，然后删除页面
          * 下一个useLayoutEffect中会根据redo.current的值，重新设置一个页面
@@ -192,9 +192,16 @@ const KeepContainer = forwardRef<ParentRef, { active: string; reset: string | nu
                 {/* keepalive page容器 */}
                 <div ref={containerRef} className="keep-alive" />
                 {map(pages.current, ({ id, component }) => {
-                    <KeepPage isActive={active === id} renderDiv={containerRef} id={id} key={id}>
-                        {component}
-                    </KeepPage>;
+                    return (
+                        <KeepPage
+                            isActive={active === id}
+                            renderDiv={containerRef}
+                            id={id}
+                            key={id}
+                        >
+                            {component}
+                        </KeepPage>
+                    );
                 })}
             </>
         );

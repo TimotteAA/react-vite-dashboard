@@ -2,13 +2,13 @@ import { RouteOption } from '@/components/router/types';
 
 export const account: RouteOption = {
     id: 'account',
-    menu: false,
+    menu: true,
     path: 'account',
     meta: { name: '账号设置' },
     children: [
         {
             id: 'account.index',
-            menu: false,
+            menu: true,
             index: true,
             page: 'account/center/index',
         },

@@ -50,6 +50,7 @@ export const useKeepAliveDispatch = () => {
 
     const changeAlive = useCallback(
         (id: string) => {
+            console.log('change active ', id);
             KeepAliveStore.dispatch({
                 type: KeepAliveAction.CHANGE,
                 payload: {

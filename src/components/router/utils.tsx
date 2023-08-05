@@ -1,8 +1,8 @@
-import { Suspense } from 'react';
+import { ComponentType, Suspense } from 'react';
 
 import { isNil, omit, trim } from 'lodash';
 
-import { DataRouteObject } from 'react-router';
+import { DataRouteObject, redirect } from 'react-router';
 
 import { isUrl } from '@/utils';
 
@@ -19,24 +19,28 @@ import { RouterStore } from './store';
  * @param auth 权限
  * @returns
  */
-export const getAuthRoutes = (routes: RouteOption[], auth: IAuth | null): RouteOption[] =>
+export const getAuthRoutes = (
+    routes: RouteOption[],
+    auth: IAuth | null,
+    configAuth?: { enabled?: boolean; path?: string; page?: string | ComponentType },
+): RouteOption[] =>
     routes
         .map((route) => {
-            if (route.auth !== false && route?.auth?.enabled !== false) {
-                // 当前没权限，返回[]
+            if (route.auth !== false && route.auth?.enabled !== false) {
                 if (isNil(auth)) return [];
-                // 路由配置需要进行权限验证
                 if (typeof route.auth !== 'boolean' && route.auth?.permissions?.length) {
-                    // 当前路由所需权限没有完全包括
                     if (!route.auth.permissions.every((p) => auth.permissions.includes(p))) {
+                        if (configAuth?.enabled && !isNil(configAuth.path)) {
+                            return [
+                                { ...route, loader: () => redirect(configAuth.path as string) },
+                            ];
+                        }
                         return [];
                     }
                     if (!route.children?.length) return [route];
-                    // 递归子路由表
                     return [{ ...route, children: getAuthRoutes(route.children, auth) }];
                 }
             }
-            // 路由没开启auth
             return [route];
         })
         .reduce((o, n) => [...o, ...n], []);
@@ -67,7 +71,7 @@ export const getRoutes = (routes: RouteOption[]): RouteOption[] =>
 export const getMenus = (routes: RouteOption[]): RouteOption[] =>
     routes
         .map((route) => {
-            if (isNil(route.menu) && !route.menu) {
+            if (!isNil(route.menu) && !route.menu) {
                 return route.children?.length ? getMenus(route.children) : [];
             }
             return [

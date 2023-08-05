@@ -64,7 +64,7 @@ export const getAsyncImport = (props: { page: string }) => {
 };
 
 /**
- * 未登录情况下重定向回登录页
+ * 未登录情况下重定向回登录页，并且路径以redirect的参数给到登录页
  * @param param0
  * @returns
  */

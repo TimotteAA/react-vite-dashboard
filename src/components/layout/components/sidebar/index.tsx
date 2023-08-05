@@ -95,7 +95,7 @@ export const Sidebar = () => {
             <Layout className="tw-h-full">
                 <Sider
                     collapsible={false}
-                    width={'100%'}
+                    width="100%"
                     className="tw-h-full"
                     style={styles}
                     trigger={null}

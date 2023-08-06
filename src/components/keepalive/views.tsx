@@ -141,7 +141,9 @@ const KeepContainer = forwardRef<ParentRef, { active: string; reset: string | nu
                 refresh: (resetId) => {
                     if (!isNil(resetId) && isNil(redo.current)) {
                         redo.current = findIndex(pages.current, (item) => item.id === resetId);
-                        pages.current = pages.current.filter(({ id }) => id !== resetId);
+                        pages.current = pages.current.filter((page) => {
+                            return page.id !== resetId;
+                        });
                     }
                 },
             }),
@@ -155,6 +157,13 @@ const KeepContainer = forwardRef<ParentRef, { active: string; reset: string | nu
             });
             redo.current = null;
             update();
+            // 对reset对应的页面进行了刷新，将state还原
+            KeepAliveStore.dispatch({
+                type: KeepAliveAction.RESET,
+                payload: {
+                    id: null,
+                },
+            });
         }, [reset]);
         useLayoutEffect(() => {
             if (isNil(active)) return;
@@ -268,12 +277,12 @@ const Provider: FC<{ children: ReactNode }> = ({ children }) => {
         if (isNil(reset)) return;
         ref.current && ref.current.refresh(reset);
         // 对reset对应的页面进行了刷新，将state还原
-        KeepAliveStore.dispatch({
-            type: KeepAliveAction.RESET,
-            payload: {
-                id: null,
-            },
-        });
+        // KeepAliveStore.dispatch({
+        //     type: KeepAliveAction.RESET,
+        //     payload: {
+        //         id: null,
+        //     },
+        // });
     }, [reset]);
     return isRoot || isNil(matchRouteId) ? (
         <>{children}</>

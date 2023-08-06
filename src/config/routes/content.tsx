@@ -22,12 +22,6 @@ export const content: RouteOption = {
             meta: { name: '文章管理' },
         },
         {
-            id: 'posts.create',
-            menu: false,
-            path: 'posts/create',
-            page: 'content/posts/create',
-        },
-        {
             path: 'categories',
             id: 'categories.list',
             page: 'content/categories/list',

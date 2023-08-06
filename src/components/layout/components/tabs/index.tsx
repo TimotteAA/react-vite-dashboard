@@ -1,6 +1,6 @@
 import { Dropdown, MenuProps, Tabs, TabsProps, theme as AntdTheme } from 'antd';
 
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useDeepCompareEffect } from 'react-use';
 
@@ -51,20 +51,22 @@ const ExtraButtons: FC<{ actived: string }> = memo(({ actived }) => {
         [lives, activedIndex],
     );
     const refreshActived = useCallback(() => refreshAlive(actived), [actived]);
-    const removeActived = useCallback(() => removeAlive(actived), [actived]);
+
+    const removeActived = useCallback(() => {
+        removeAlive(actived);
+    }, [actived]);
     const removeOthers = useCallback(
         () => removeAlives(lives.filter((item) => item !== actived)),
         [actived, lives],
     );
     /** 删除左边全部的 */
-    const removeLeft = useCallback(
-        () => removeAlives(lives.filter((_, idx) => idx < activedIndex)),
-        [],
-    );
+    const removeLeft = useCallback(() => {
+        removeAlives(lives.filter((_, idx) => idx < activedIndex));
+    }, [lives, activedIndex]);
     // 删除右边全部的
     const removeRight = useCallback(
         () => removeAlives(lives.filter((_, idx) => idx > activedIndex)),
-        [],
+        [lives, activedIndex],
     );
     const menus = useMemo<MenuProps['items']>(
         () => [
@@ -78,7 +80,9 @@ const ExtraButtons: FC<{ actived: string }> = memo(({ actived }) => {
                 key: 'remove-actived',
                 label: '关闭当前',
                 icon: <Icon component={IconClose} />,
-                onClick: removeActived,
+                onClick: () => {
+                    removeActived();
+                },
             },
             {
                 key: 'remove-others',
@@ -108,7 +112,7 @@ const ExtraButtons: FC<{ actived: string }> = memo(({ actived }) => {
                 onClick: clearAlives,
             },
         ],
-        [],
+        [actived, lives],
     );
 
     return (
@@ -127,7 +131,6 @@ const KeepAliveTabs = () => {
     const {
         token: { colorBgContainer, colorBorderSecondary, controlItemBgActive },
     } = AntdTheme.useToken();
-
     const [tabs, setTabs] = useState<TabsProps['items']>([]);
 
     const remove: NonNullable<TabsProps['onEdit']> = useCallback((id, action: 'add' | 'remove') => {

@@ -24,6 +24,7 @@ const keepAliveReducer: Reducer<KeepAliveStoreType, KeepAliveActionType> = produ
                     )
                 )
                     return;
+
                 // 是否是新增的，此处是否是重复判断？
                 const isNew = !lives.filter((item) => item === action.payload.id).length;
                 if (isNew) {
@@ -36,6 +37,7 @@ const keepAliveReducer: Reducer<KeepAliveStoreType, KeepAliveActionType> = produ
             }
             case KeepAliveAction.REMOVE: {
                 const { id, navigate } = action.payload;
+
                 // 判断删除的是否还存在
                 const index = findIndex(state.lives, (item) => item === id);
                 if (index === -1) return;

@@ -34,7 +34,7 @@ export const LayoutHeader = () => {
     const theme = useLayoutTheme();
     const { toggleCollapse, toggleMobileSide } = useLayoutAction();
     const sideControl = useCallback(() => {
-        isMobile ? toggleMobileSide() : toggleCollapse;
+        isMobile ? toggleMobileSide() : toggleCollapse();
     }, [isMobile, isNotebook]);
     const {
         token: { colorBgContainer },

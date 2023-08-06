@@ -120,9 +120,12 @@ export const SideMenu: FC<{
     useUpdateEffect(() => {
         if (!collapsed && !isNil(opens) && mode !== 'horizontal') ref.current = opens;
     }, [opens]);
+    /**
+     * 监听菜单项的打开与关闭
+     */
     const onOpenChange = useCallback(
         (keys: string[]) => {
-            if (mode === 'horizontal' || collapsed || !opens) return;
+            if (mode === 'horizontal' || !opens) return;
             // 非水平模式，且非折叠，有打卡的菜单
             // key 是最新被用户展开的菜单项的 key,即opens数组中不存在
             const latest = keys.find((key) => opens?.indexOf(key) === -1);

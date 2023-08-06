@@ -21,7 +21,11 @@ export default {
             kaiti: 'var(--font-family-kaiti)',
             firacode: 'var(--font-family-firacode)',
         },
-        extend: {},
+        extend: {
+            transitionProperty: {
+                padding: 'padding-left',
+            },
+        },
     },
     corePlugins: {
         preflight: false,

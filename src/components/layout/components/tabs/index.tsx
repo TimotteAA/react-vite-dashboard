@@ -1,6 +1,6 @@
 import { Dropdown, MenuProps, Tabs, TabsProps, theme as AntdTheme } from 'antd';
 
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 
 import { useDeepCompareEffect } from 'react-use';
 
@@ -21,6 +21,8 @@ import IconLeft from '~icons/mdi/arrow-collapse-left';
 import IconRight from '~icons/mdi/arrow-collapse-right';
 import IconExpend from '~icons/mdi/arrow-expand-horizontal';
 import IconClear from '~icons/ant-design/minus-outlined';
+
+import $styles from './index.module.css';
 
 /**
  * 获得传入路由表中各个路由的id: name对象
@@ -155,6 +157,7 @@ const KeepAliveTabs = () => {
     // 只有当有页面加入缓存后，才渲染tab
     return actived ? (
         <div
+            className={$styles.container}
             style={
                 {
                     backgroundColor: colorBgContainer,

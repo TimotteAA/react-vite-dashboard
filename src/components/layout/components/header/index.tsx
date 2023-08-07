@@ -16,6 +16,7 @@ import { Logo } from '../sidebar/logo';
 
 import { useLayout, useLayoutAction, useLayoutTheme } from '../../hooks';
 import { SideMenu } from '../menu';
+import Breadcrumb from '../breadcumb';
 
 const Setting = () => {
     const drawer = useDrawer();
@@ -74,6 +75,8 @@ export const LayoutHeader = () => {
                         onClick={sideControl}
                     />
                 )}
+                {/* {(mode === 'top' || mode === 'embed') && <Breadcrumb />} */}
+                <Breadcrumb />
             </Space>
             <div className="tw-flex-auto">
                 {/* top模式下的导航菜单 */}

@@ -133,6 +133,7 @@ const KeepAliveTabs = () => {
     const {
         token: { colorBgContainer, colorBorderSecondary, controlItemBgActive },
     } = AntdTheme.useToken();
+    console.log('globalToken ', AntdTheme.useToken());
     const [tabs, setTabs] = useState<TabsProps['items']>([]);
 
     const remove: NonNullable<TabsProps['onEdit']> = useCallback((id, action: 'add' | 'remove') => {

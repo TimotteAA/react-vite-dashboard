@@ -5,7 +5,6 @@ import { FC, useEffect, useState } from 'react';
 import { MappingAlgorithm, ThemeConfig } from 'antd/es/config-provider/context';
 
 import { ConfigProvider, theme, App as AntdApp } from 'antd';
-import { ThemeProvider } from 'antd-style';
 
 import { produce } from 'immer';
 
@@ -43,7 +42,7 @@ const App = () => {
             setAlgorithm(
                 mode === 'light'
                     ? [theme.defaultAlgorithm, theme.compactAlgorithm]
-                    : [theme.darkAlgorithm, theme.compactAlgorithm],
+                    : [customDarkAlgorithm, theme.compactAlgorithm],
             );
         }
         if (mode === 'dark') {

@@ -49,6 +49,7 @@ export const LayoutHeader = () => {
         }),
         [theme.header, layoutStyles],
     );
+    // 处理header的模式切换后的字体颜色
     const classes = useMemo(() => {
         if (theme.header === 'dark') return '!tw-text-[rgba(255, 255, 25, 0.65)]';
         return 'tw-bg-white';

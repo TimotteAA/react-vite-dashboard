@@ -1,0 +1,5 @@
+.link {
+    &:global(.breadActive) {
+        @apply tw-text-[color:var(--colorPrimaryText)];
+    }
+}

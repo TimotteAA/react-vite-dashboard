@@ -7,6 +7,7 @@ import { useResponsiveMobileCheck } from '@/utils/hooks';
 import { RouterStore } from '@/components/router/store';
 import { factoryRoutes } from '@/components/router/utils';
 import { RouteOption } from '@/components/router/types';
+import { isNil } from 'lodash';
 
 const Breadcrumb: FC = () => {
     const isMobile = useResponsiveMobileCheck();
@@ -22,14 +23,14 @@ const Breadcrumb: FC = () => {
             [],
         ),
     );
-    const matches = matchRoutes(factoryRoutes(routes), location, basepath);
+    const matches = matchRoutes(factoryRoutes(routes), location, basepath)!;
 
-    const items: ItemType = useMemo(() => {
+    const items: ItemType[] = useMemo(() => {
         return matches
             ?.slice(1)
             .map((item) => ({ key: item.pathname, title: (item?.route as any)?.meta.name }));
     }, [matches]);
-    if (isMobile) return null;
+    if (isMobile || isNil(matches)) return null;
 
     return <AntdBreadcrumb items={items as any} />;
 };

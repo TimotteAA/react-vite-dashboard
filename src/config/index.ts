@@ -11,6 +11,9 @@ import { addLoading } from './routes/loading';
 import { media } from './routes/media';
 import { setting } from './routes/setting';
 
+// 嵌套菜单
+import { treeMenu } from './routes/tree-menu';
+
 export const config = (): IConfig => ({
     auth: { api: '/user/info' },
     router: {
@@ -25,7 +28,7 @@ export const config = (): IConfig => ({
                 path: '/',
                 page: 'layouts/master',
                 error: 'errors/404',
-                children: addLoading([home, dashboard, account, content, media, setting]),
+                children: addLoading([home, dashboard, account, content, media, setting, treeMenu]),
             },
             errors,
         ],

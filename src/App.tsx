@@ -4,7 +4,8 @@ import { FC, useEffect, useState } from 'react';
 
 import { MappingAlgorithm, ThemeConfig } from 'antd/es/config-provider/context';
 
-import { Button, ConfigProvider, theme, App as AntdApp } from 'antd';
+import { ConfigProvider, theme, App as AntdApp } from 'antd';
+import { ThemeProvider } from 'antd-style';
 
 import { produce } from 'immer';
 
@@ -13,6 +14,9 @@ import { StyleProvider } from '@ant-design/cssinjs';
 import Router from './components/router/router';
 import { Fetcher } from './components/fetcher/provider';
 import { useTheme, useThemeListener } from './components/theme/hooks';
+import { useLayoutTheme } from './components/layout/hooks';
+import { LayoutStore } from './components/layout/store';
+import { customDarkAlgorithm } from './utils/customDark';
 // import {  }
 
 const App = () => {
@@ -33,12 +37,13 @@ const App = () => {
 
     useEffect(() => {
         if (!compact) {
-            setAlgorithm(mode === 'light' ? [theme.defaultAlgorithm] : [theme.darkAlgorithm]);
+            // setAlgorithm(mode === 'light' ? [theme.defaultAlgorithm] : [theme.darkAlgorithm]);
+            setAlgorithm(mode === 'light' ? [theme.defaultAlgorithm] : [customDarkAlgorithm]);
         } else {
             setAlgorithm(
                 mode === 'light'
                     ? [theme.defaultAlgorithm, theme.compactAlgorithm]
-                    : [theme.defaultAlgorithm, theme.compactAlgorithm],
+                    : [theme.darkAlgorithm, theme.compactAlgorithm],
             );
         }
         if (mode === 'dark') {
@@ -61,7 +66,6 @@ const App = () => {
             );
         }
     }, [mode, compact]);
-
     return (
         <ConfigProvider
             theme={{
@@ -74,6 +78,13 @@ const App = () => {
         >
             {/* 取消 :where定义的Antd样式，并解决与tailwind的样式冲突问题 */}
             <StyleProvider hashPriority="high">
+                {/* <ThemeProvider appearance={'light'}>
+                    <AntdApp>
+                        <Fetcher>
+                            <Router />
+                        </Fetcher>
+                    </AntdApp>
+                </ThemeProvider> */}
                 <AntdApp>
                     <Fetcher>
                         <Router />
